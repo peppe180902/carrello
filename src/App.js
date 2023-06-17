@@ -1,11 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import './index.css';
 import Navbar from './Navbar';
 import Prodotto from './Prodotto';
-import products from './products';
 import Checkout from './Checkout';
-import { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCartFlatbed } from "@fortawesome/free-solid-svg-icons"
 import { useGlobalContext } from './context';
@@ -34,7 +31,7 @@ function App() {
         <button><FontAwesomeIcon icon={faCartFlatbed} style={{color: "#ff0000",}} onClick={deleteAll}/></button>
       </div>
       <hr className='mt-4'/>
-      {data.map(el => <Prodotto {...el}/>)}
+      {data.map(el => <Prodotto key={el._id} {...el}/>)}
       {data.length === 0 && <h2 className='flex justify-center mt-20 font-mono'>Nessun prodotto nel carrello</h2>}
       {data.length > 0 && <Checkout />}
     </div>

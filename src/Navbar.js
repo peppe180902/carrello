@@ -5,6 +5,8 @@ import { useGlobalContext } from './context'
 
 function Navbar() {
     const {data} = useGlobalContext();
+    const totalQty = data.reduce((total, amount) => total + amount.qty, 0)
+
   return (
     <nav>
       <header className='bg-sky-300 h-16 flex justify-around'>
@@ -13,7 +15,7 @@ function Navbar() {
         </div>
         <div className='flex items-center mr-3 text-3xl'>
             <FontAwesomeIcon icon={faCartShopping} />
-            <p className='font-mono text-red-600 text-xl'>{data.qty}</p>
+            <p className='font-mono text-red-600 text-xl'>{totalQty}</p>
         </div>
       </header>
     </nav>

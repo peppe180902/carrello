@@ -1,26 +1,45 @@
 import React, { useState } from 'react'
-import products from './products'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 import { useGlobalContext } from './context'
 
 
-const Prodotto = ({ _id, name, image, price }) => {
-    const { data, removeProdotti, sommaAlCart, sottrazioneAlCart } = useGlobalContext()
-    const [counter, setCounter] = useState(1)
+const Prodotto = ({ _id, name, image, price, qty }) => {
+    const { data, removeProdotti, sommaAlCart, sottrazioneAlCart, setData } = useGlobalContext()
+    // const [counter, setCounter] = useState(1)
 
     const addCounter = () => {
         const stock = data.find(el => el._id === _id);
-            if(counter < stock.countInStock){
-                setCounter(counter + 1)
+            if(stock.qty < stock.countInStock){
+                const newCart = data.map(product => {
+                    if (product._id === stock._id) {
+                        return {
+                            ...product,
+                            qty: product.qty + 1 
+                        }
+                    }
+                    return product
+                })
+                setData(newCart)
+                // setCounter(counter + 1)
                 sommaAlCart(_id)
               }
-              console.log(counter + 1)
     }
 
     const prevCounter = () => {
-        if (counter > 1) {
-            setCounter(counter - 1)
+        const stock = data.find(el => el._id === _id);
+        if (stock.qty > 1) {
+            const newCart = data.map(product => {
+                if (product._id === stock._id) {
+                    return {
+                        ...product,
+                        qty: product.qty - 1 
+                    }
+                }
+                return product
+            })
+            setData(newCart)
+            // setCounter(counter - 1)
             sottrazioneAlCart(_id)
         } else {
             removeProdotti(_id)
@@ -39,7 +58,8 @@ const Prodotto = ({ _id, name, image, price }) => {
                 <h5 className='prd-name'>{name}</h5>
                 <div className='flex justify-center qty-selector'>
                     <button><FontAwesomeIcon icon={faPlus} style={{ color: 'red' }} onClick={addCounter} /></button>
-                    <h3 className='text-2xl'>{counter}</h3>
+                    {/* <h3 className='text-2xl'>{counter}</h3> */}
+                    <h3 className='text-2xl'>{qty}</h3>
                     <button><FontAwesomeIcon icon={faMinus} style={{ color: 'red' }} onClick={prevCounter} /></button>
                 </div>
                 <p>{price}</p>
